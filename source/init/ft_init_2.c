@@ -14,13 +14,14 @@
 
 /**
  * Checker for strings of colors
- * 
- * allows for leading and trailing spaces
+ *
+ * allows for leading and trailing spaces, but no other
+ * chars where colors RGB values should be
  */
-static bool ft_is_numbers(char **arr)
+static bool	ft_is_numbers(char **arr)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
 	while (arr[i])
@@ -41,25 +42,29 @@ static bool ft_is_numbers(char **arr)
 	return (true);
 }
 
-static void ft_free_arr(char **arr)
+/**
+ * Frees the array made by ft_split
+ */
+static void	ft_free_arr(char **arr)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (arr[i])
 	{
 		free(arr[i]);
+		arr[i] = NULL;
 		i++;
 	}
 	free(arr);
 }
 
-static bool ft_set_colors_2(t_data *data)
+static bool	ft_set_colors_2(t_data *data)
 {
-	char **arr;
-	int red;
-	int green;
-	int blue;
+	char	**arr;
+	int		red;
+	int		green;
+	int		blue;
 
 	arr = ft_split(data->string_f_color, ',');
 	if (!arr || !arr[0] || !arr[1] || !arr[2] || arr[3] || !ft_is_numbers(arr))
@@ -72,7 +77,8 @@ static bool ft_set_colors_2(t_data *data)
 	green = ft_atoi(arr[1]);
 	blue = ft_atoi(arr[2]);
 	ft_free_arr(arr);
-	if ((red < 0 || red > 255) || (green < 0 || green > 255) || (blue < 0 || blue > 255))
+	if ((red < 0 || red > 255) || (green < 0 || green > 255) || (blue < 0
+			|| blue > 255))
 		return (false);
 	data->floor_color = (0xFF << 24) | (red << 16) | (green << 8) | blue;
 	return (true);
@@ -80,16 +86,17 @@ static bool ft_set_colors_2(t_data *data)
 
 /**
  * Sets colors of floor and ceiling into 32bit int with 0xAARRGGBB
- * 
- * checks input for validity, then extracts the values from input and 
- * bitshifts the values into position
+ *
+ * checks input for validity, then extracts the values from input and
+ * bitshifts the values into position, almost identical functions for
+ * the ceiling and for the floor colors
  */
-bool ft_set_colors(t_data *data)
+bool	ft_set_colors(t_data *data)
 {
-	char **arr;
-	int red;
-	int green;
-	int blue;
+	char	**arr;
+	int		red;
+	int		green;
+	int		blue;
 
 	if (!data->string_c_color || !data->string_f_color)
 		return (false);
@@ -104,25 +111,31 @@ bool ft_set_colors(t_data *data)
 	green = ft_atoi(arr[1]);
 	blue = ft_atoi(arr[2]);
 	ft_free_arr(arr);
-	if ((red < 0 || red > 255) || (green < 0 || green > 255) || (blue < 0 || blue > 255))
+	if ((red < 0 || red > 255) || (green < 0 || green > 255) || (blue < 0
+			|| blue > 255))
 		return (false);
 	data->ceiling_color = (0xFF << 24) | (red << 16) | (green << 8) | blue;
 	return (ft_set_colors_2(data));
 }
 
-void ft_set_init_plane(t_data *data)
+/**
+ * Sets plane based on the player vector. It is a perpendicular
+ * vector to the players direction and it enables the raycaster
+ * to cast a ray for each screen pixel column. It controls the Field Of View.
+ */
+void	ft_set_init_plane(t_data *data)
 {
-	double plane_len;
+	double	plane_len;
 
-	plane_len = tan(FOV/2);
+	plane_len = tan(FOV / 2);
 	data->plane.dx = -data->dir.dy * plane_len;
 	data->plane.dy = data->dir.dx * plane_len;
 }
 
 /**
- * Sets initial player angle
+ * Sets initial player vector based on input.
  */
-bool ft_set_initial_position(t_data *data)
+bool	ft_set_initial_position(t_data *data)
 {
 	if (data->initial_orientation == 'X')
 		return (false);

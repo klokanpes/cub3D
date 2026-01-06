@@ -31,7 +31,9 @@ SRC_RUNTIME		:=	$(RUNTIME)/custom_mlx_pixel_put.c		\
 					$(RUNTIME)/ft_minimap.c					\
 					$(RUNTIME)/ft_minimap_2.c				\
 					$(RUNTIME)/ft_position.c				\
-					$(RUNTIME)/utils.c
+					$(RUNTIME)/utils.c						\
+					$(RUNTIME)/ft_raycasting_1.c			\
+					$(RUNTIME)/ft_raycasting_2.c
 
 CFILES			:=	$(SRC_INIT)								\
 					$(SRC_ROOT)								\

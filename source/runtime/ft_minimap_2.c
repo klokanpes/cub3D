@@ -12,6 +12,9 @@
 
 #include "../../includes/cub3d.h"
 
+/**
+ * Computes the player position transformed into minimap units (32x32 px)
+ */
 t_player_mini_pos	ft_get_minimap_player_pos(t_data *data)
 {
 	int					s;
@@ -24,9 +27,13 @@ t_player_mini_pos	ft_get_minimap_player_pos(t_data *data)
 }
 
 /**
- * 5 is the radius of the circle
+ * draws a circle on the minimap where the player position is.
+ * 
+ * basically itterates over a square (double loop), and for pixels 
+ * that would fit the definition of a circle it puts a red pixel.
  */
-static void	ft_draw_circle_on_minimap(t_player_mini_pos pos, t_img_data to_win_data)
+static void	ft_draw_circle_on_minimap(t_player_mini_pos pos,
+		t_img_data to_win_data)
 {
 	int	dx;
 	int	dy;
@@ -41,7 +48,8 @@ static void	ft_draw_circle_on_minimap(t_player_mini_pos pos, t_img_data to_win_d
 		{
 			dx = x - pos.x;
 			dy = y - pos.y;
-			if (dx * dx + dy * dy <= PLAYER_RADIUS_MINIMAP * PLAYER_RADIUS_MINIMAP)
+			if (dx * dx + dy * dy <= PLAYER_RADIUS_MINIMAP
+				* PLAYER_RADIUS_MINIMAP)
 				custom_mlx_pixel_put(&to_win_data, x, y, 0xFFFF0000);
 			x++;
 		}
@@ -49,7 +57,9 @@ static void	ft_draw_circle_on_minimap(t_player_mini_pos pos, t_img_data to_win_d
 	}
 }
 /**
- * Draw a line and a circle, sets up player position and draws
+ * Draws a circle at the player position (center of minimap),
+ * then draws a black line of 10 px in the direction of the current
+ * vector
  */
 void	ft_put_player_on_minimap(int dst_y0, t_data *data,
 		t_img_data to_win_data)
@@ -60,7 +70,7 @@ void	ft_put_player_on_minimap(int dst_y0, t_data *data,
 	t_player_mini_pos	pos;
 
 	pos.x = WIDTH / 2;
-	pos.y = dst_y0 + 150;
+	pos.y = dst_y0 + MINI_WIDTH / 2;
 	ft_draw_circle_on_minimap(pos, to_win_data);
 	tip_len = 10.0;
 	tip.x = (int)((double)pos.x + data->dir.dx * tip_len);
@@ -78,8 +88,8 @@ void	ft_put_player_on_minimap(int dst_y0, t_data *data,
  */
 void	ft_prefill_minimap(t_minimap *map)
 {
-	int	i;
-	int	j;
+	int i;
+	int j;
 
 	i = 0;
 	while (i < 300)

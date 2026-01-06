@@ -14,9 +14,9 @@
 
 /**
  * sets the initial player position, orientation and clears the place in the
- * map to be normal empty space 
+ * map to be normal empty space
  */
-static void ft_set_initial_player_coords(t_data *data, int i, int j)
+static void	ft_set_initial_player_coords(t_data *data, int i, int j)
 {
 	data->initial_orientation = data->map[i][j];
 	data->map[i][j] = '0';
@@ -28,25 +28,25 @@ static void ft_set_initial_player_coords(t_data *data, int i, int j)
  * Goes over the map, checks that it only contains allowed chars,
  * and counts how many player initial positions there are. If there
  * are more then 1, it returns false, else returns true.
- * 
+ *
  * Also, facilitates the setting of the initial player position
  * being stored in data
  */
-bool ft_map_char_check(t_data *data)
+bool	ft_map_char_check(t_data *data)
 {
-	int i;
-	int j;
-	int player_pos_counter;
+	int	i;
+	int	j;
+	int	player_pos_counter;
 
 	i = 0;
 	player_pos_counter = 0;
 	while (data->map[i])
 	{
 		j = 0;
-		while(data->map[i][j])
+		while (data->map[i][j])
 		{
 			if (!ft_strchr(" 10NSEW", (int)data->map[i][j]))
-				return(false);
+				return (false);
 			if (ft_strchr("NSEW", (int)data->map[i][j]))
 			{
 				ft_set_initial_player_coords(data, i, j);
@@ -64,11 +64,11 @@ bool ft_map_char_check(t_data *data)
 /**
  * Returns the length of the longest line in the map
  */
-int ft_get_longest_line_len(char **map)
+int	ft_get_longest_line_len(char **map)
 {
-	int i;
-	int longest_len;
-	int this_len;
+	int	i;
+	int	longest_len;
+	int	this_len;
 
 	i = 0;
 	longest_len = 0;
@@ -85,9 +85,9 @@ int ft_get_longest_line_len(char **map)
 /**
  * swaps two strings (from an array) and frees the original one.
  */
-static void ft_swap_strings(t_data *data, char *new_line, int i)
+static void	ft_swap_strings(t_data *data, char *new_line, int i)
 {
-	char *temp;
+	char	*temp;
 
 	temp = data->map[i];
 	data->map[i] = new_line;
@@ -97,16 +97,16 @@ static void ft_swap_strings(t_data *data, char *new_line, int i)
 /**
  * Appends spaces to a line if it was deemed to be too short. It creates
  * a new string of only spaces that is how_many chars long, null terminates
- * it, then calls ft_strjoin to join it together with the original string. 
- * 
+ * it, then calls ft_strjoin to join it together with the original string.
+ *
  * The result is then swapped with the original string in the map array and
  * both the previous map line and the temp spaces string get freed.
  */
-void ft_append_spaces(t_data *data, int i, int how_many)
+void	ft_append_spaces(t_data *data, int i, int how_many)
 {
-	int j;
-	char *temp;
-	char *spaces;
+	int		j;
+	char	*temp;
+	char	*spaces;
 
 	j = 0;
 	spaces = (char *)malloc(sizeof(char) * how_many + 1);

@@ -13,7 +13,10 @@
 #include "../../includes/cub3d.h"
 
 /**
- * @todo COMMENTS! SO MUCH FUCKING HAPPENING HERE!
+ * returns the new direction vector of the player based on
+ * the original direction and delta theta. 
+ * 
+ * Adapted from: https://lodev.org/cgtutor/raycasting.html
  */
 static t_dir	ft_get_dir(float d_th, t_dir orig_dir)
 {
@@ -25,7 +28,9 @@ static t_dir	ft_get_dir(float d_th, t_dir orig_dir)
 }
 
 /**
- * @todo COMMENTS! SO MUCH FUCKING HAPPENING HERE!
+ * Sets plane based on the player vector. It is a perpendicular
+ * vector to the players direction and it enables the raycaster
+ * to cast a ray for each screen pixel column. It controls the Field Of View.
  */
 static void	ft_set_plane(t_cub_data *c_data)
 {
@@ -37,7 +42,25 @@ static void	ft_set_plane(t_cub_data *c_data)
 }
 
 /**
- * @todo COMMENTS! SO MUCH FUCKING HAPPENING HERE!
+ * These functions (above) parse the rotation movement to
+ * currently be applied and apply it.
+ *
+ * Firstly, it gives the old value to the new one (different
+ * structs -> so as to not loose data if there is nothing to be done).
+ *
+ * Then, if no button is pressed (left|right arrow), it returns right
+ * away -> nothing to be done here. Also, it disregards both buttons
+ * being pressed at the same time.
+ *
+ * else, it calculates the d_th(delta theta) angular velocity, by
+ * multiplying ROT_SPEED(in radians/second) by time_delta. So that rotation
+ * speed is the same no matter the framerate. Basically, how much
+ * rotation to apply in each frame.
+ * 
+ * Then it applies the rotation by calculating the new forward vector
+ * based on the button being pressed. (left arrow gets -delta theta)
+ * 
+ * Then it sets the new plane (perpendicular vector) and returns.
  */
 bool	ft_update_vector(t_data *data, t_cub_data *c_data)
 {
@@ -45,6 +68,8 @@ bool	ft_update_vector(t_data *data, t_cub_data *c_data)
 
 	c_data->new_dir.dx = data->dir.dx;
 	c_data->new_dir.dy = data->dir.dy;
+	c_data->new_plane.dx = data->plane.dx;
+	c_data->new_plane.dy = data->plane.dy;
 	if ((!data->buttons.left && !data->buttons.right) || (data->buttons.left
 			&& data->buttons.right))
 		return (false);

@@ -32,11 +32,15 @@
 # define ROT_SPEED 2
 # define MOV_SPEED 1
 # define MOV_FAST 2
-# define FOV 33
+# define FOV 1.047
 # define MINIMAP_TILE_TEXTURE_SIZE 32
 # define FRAME_COUNTER 30
 # define PLAYER_RADIUS_MINIMAP 7
 # define PLAYER_COLISION_RADIUS 0.2
+# define VIEWPORT_WIDTH 1280
+# define VIEWPORT_HEIGTH 720
+# define MINI_WIDTH 300
+# define MINI_HEIGTH 300
 
 # define MINIMAP_FLOOR "assets/map_floor.xpm"
 # define MINIMAP_WALL "assets/map_wall.xpm"
@@ -132,12 +136,16 @@ typedef struct s_data
 	int					map_heigth;
 	int					texture_heigth;
 	int					texture_width;
+	int					mini_texture_heigth;
+	int					mini_texture_width;
 	int					arr_heigth;
 	int					arr_width;
 	long long			last_time;
 	t_buttons			buttons;
 	t_dir				dir;
 	t_dir				plane;
+	int					map_started;
+	int					map_ended;
 }						t_data;
 
 typedef struct s_cub_data
@@ -202,6 +210,41 @@ typedef struct s_minimap
 	int					dst_copy_y0;
 }						t_minimap;
 
+typedef struct s_raycast
+{
+	t_img_data			idata;
+	t_img_data			north;
+	t_img_data			south;
+	t_img_data			east;
+	t_img_data			west;
+	t_img_data			tex_img;
+	int					x_offset;
+	int					y_offset;
+	double				camera_x;
+	double				ray_dir_x;
+	double				ray_dir_y;
+	int					map_x;
+	int					map_y;
+	double				side_dist_x;
+	double				side_dist_y;
+	double				delta_dist_x;
+	double				delta_dist_y;
+	double				perp_wall_dist;
+	int					step_x;
+	int					step_y;
+	int					hit;
+	int					side;
+	int					line_heigth;
+	int					draw_start;
+	int					draw_end;
+	double				wall_x;
+	int					tex_x;
+	int					tex_y;
+	double				step;
+	double				tex_pos;
+	uint32_t			color;
+}						t_raycast;
+
 // init_source folder
 
 void					ft_read_from_file(int fd, t_data *data);
@@ -219,6 +262,12 @@ int						ft_init(int ac, char **av, t_data *data);
 int						ft_init_buttons(t_data *data);
 bool					ft_set_colors(t_data *data);
 bool					ft_set_initial_position(t_data *data);
+bool					ft_border_check(char **map, int width, int heigth,
+							t_data *data);
+void					ft_free_get_next(int fd);
+void					ft_map_space_error_exit(int fd, t_data *data,
+							char *temp);
+bool					ft_is_map(char *s);
 
 // textures_init folder
 
@@ -245,5 +294,20 @@ t_player_mini_pos		ft_get_minimap_player_pos(t_data *data);
 bool					ft_update_vector(t_data *data, t_cub_data *c_data);
 bool					ft_update_position(t_data *data, t_cub_data *c_data);
 int						ft_reset_time_delta(t_data *data);
+void					ft_raycast_ddm(t_data *data, t_raycast *r_data);
+void					ft_raycast_colision_vals(t_data *data,
+							t_raycast *r_data);
+void					ft_raycast_set_current_texture(t_raycast *r_data);
+void					ft_raycast_draw_column(t_data *data, t_raycast *r_data,
+							int i);
+double					ft_get_delta_dist(double ray_dir);
+uint32_t				ft_get_pixel_color(t_img_data *img, int x, int y,
+							t_data *data);
+void					ft_raycast_initial_data(t_data *data,
+							t_raycast *r_data);
+void					ft_raycast_set_vals_in_loop(t_data *data,
+							t_raycast *r_data, int i);
+void					ft_raycast_set_step_x_n_y(t_data *data,
+							t_raycast *r_data);
 
 #endif

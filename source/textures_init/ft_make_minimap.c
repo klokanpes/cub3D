@@ -12,33 +12,63 @@
 
 #include "../../includes/cub3d.h"
 
-static void ft_copy_texture(t_t_copy *c, t_data *data, void *texture)
+/**
+ * Coopies the specific texture row by row into the whole minimap image.
+ * 
+ * gets addresses of src and dst (src is always the single texture), dst
+ * is always the complete minimap img. 
+ * 
+ * Since all is done via mlx, bits per pixel are the same for both here.
+ * then it copies 32 rows(texture heigth) from src, to dst address
+ * 
+ * src address is i times line_len + beginning of src address
+ * 
+ * the dst address is the beginning address + (y + i) times line_len + 
+ * x * bytes_pp (4). That accounts for the coordinates where I want to copy.
+ * 
+ * Then it uses ft_memcpy to copy the data.
+ */
+static void	ft_copy_texture(t_t_copy *c, t_data *data, void *texture)
 {
-	int i;
-	int bytes_pp;
-	t_img_data src;
-	t_img_data dst;
-	char *src_row;
-	char *dst_row;
-	
-	src.addr = mlx_get_data_addr(texture, &src.bits_per_pixel, &src.line_length, &src.endian);
-	dst.addr = mlx_get_data_addr(data->image_minimap, &dst.bits_per_pixel, &dst.line_length, &dst.endian);
+	int			i;
+	int			bytes_pp;
+	t_img_data	src;
+	t_img_data	dst;
+	char		*src_row;
+	char		*dst_row;
+
+	src.addr = mlx_get_data_addr(texture, &src.bits_per_pixel, &src.line_length,
+			&src.endian);
+	dst.addr = mlx_get_data_addr(data->image_minimap, &dst.bits_per_pixel,
+			&dst.line_length, &dst.endian);
 	bytes_pp = src.bits_per_pixel / 8;
 	i = 0;
-	while(i < 32)
+	while (i < data->mini_texture_heigth)
 	{
 		src_row = src.addr + i * src.line_length;
 		dst_row = dst.addr + (c->y + i) * dst.line_length + c->x * bytes_pp;
-		ft_memcpy(dst_row, src_row, 32 * bytes_pp);
+		ft_memcpy(dst_row, src_row, data->mini_texture_heigth * bytes_pp);
 		i++;
 	}
 }
 
-bool ft_make_minimap(t_data *data)
+/**
+ * Makes an image of a complete minimap from which pixels are then copied
+ * to the minimap viewport.
+ *
+ * initializes a new image that is((map_width * texture_width) * (map_heigth *
+ * texture_heigth)) big.
+ * 
+ * Then proceeds to loop through the map(char **), checking for
+ * values, and either copying the floor or wall textures at the correct
+ * coordinates.
+ */
+bool	ft_make_minimap(t_data *data)
 {
-	t_t_copy c;
+	t_t_copy	c;
 
-	data->image_minimap = mlx_new_image(data->mlx, 32 * data->map_width, 32 * data->map_heigth);
+	data->image_minimap = mlx_new_image(data->mlx, data->mini_texture_heigth
+			* data->map_width, data->mini_texture_heigth * data->map_heigth);
 	if (!data->image_minimap)
 		return (false);
 	c.y = 0;
@@ -53,10 +83,10 @@ bool ft_make_minimap(t_data *data)
 				ft_copy_texture(&c, data, data->image_map_floor);
 			else
 				ft_copy_texture(&c, data, data->image_map_wall);
-			c.x+=32;
+			c.x += data->mini_texture_heigth;
 			c.j++;
 		}
-		c.y+=32;
+		c.y += data->mini_texture_heigth;
 		c.i++;
 	}
 	return (true);

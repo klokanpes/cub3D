@@ -1,0 +1,7 @@
+/build
+/libft/*.o
+/libft/*.a
+/libft/*/*.o
+/libft/*/*.a
+cub3d
+/minilibx-linux

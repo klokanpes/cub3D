@@ -13,11 +13,11 @@
 #include "../../includes/cub3d.h"
 
 /**
- * @brief Custom pixel put function that takes into account data alignment
- * @param img_data pointer to t_data_img
- * @param x coordinates
- * @param y coordinates
- * @param color hex ARGB value
+ * Custom pixel put function that takes into account data alignment
+ * 
+ * Was mentioned in multiple docs, since the builtin is supposedly not mem
+ * aligned so this should be faster. It computes the dst address and puts
+ * the color value there (like a pixel)
  */
 void	custom_mlx_pixel_put(t_img_data *img_data, int x, int y, int color)
 {
@@ -28,12 +28,27 @@ void	custom_mlx_pixel_put(t_img_data *img_data, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
-/// @brief This is a line drawing algorithm inspired by Bresenhams algorithm.
-/// This one could be much more effitient, but then again, it is way simpler
-/// this way. - Original Bresenham only works with integers.
-/// @param coords set of coordinates where from and where to draw
-/// @param img_data img data for drawing into the image
-/// @param color of the line to be drawn
+/**
+ * This is a line drawing algorithm inspired by Bresenhams algorithm.
+ * This one could be much more effitient, but then again, it is way simpler
+ * this way. - Original Bresenham only works with integers.
+ * 
+ * What it does is goes pixel by pixel in a "line" while deciding which
+ * of the two pixels in the "line" is more in "line"...
+ * 
+ * Imagine a line being drawn in a matrix. It can't, since it would go
+ * through multiple points. So this algorithm decides where to draw the
+ * line based on which point is more in "line".
+ * 
+ * It basically calculates a vector (dx, dy), then gets the max value
+ * out of dx and dy.
+ * If step is 0, then there is no line to be drawn...
+ * Then calculates the step_x and step_y -> how many steps there should
+ * be.
+ * Then it proceeds to draw them, moving pixel by pixel via i, while
+ * casting the whole value to an int, making an approximation basically, 
+ * thereby deciding where to go.
+ */
 void	ft_draw_lines(t_coords *coords, t_img_data *img_data, int color)
 {
 	int		dx;

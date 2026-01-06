@@ -28,7 +28,7 @@ bool	arg_check(char *arg)
 	return (true);
 }
 
-int ft_init_buttons(t_data *data)
+int	ft_init_buttons(t_data *data)
 {
 	data->buttons.w = false;
 	data->buttons.s = false;
@@ -38,6 +38,10 @@ int ft_init_buttons(t_data *data)
 	data->buttons.right = false;
 	data->buttons.shift = false;
 	data->fps_string = NULL;
+	data->mini_texture_heigth = 32;
+	data->mini_texture_width = 32;
+	data->map_started = 0;
+	data->map_ended = 0;
 	return (0);
 }
 
@@ -45,7 +49,7 @@ int ft_init_buttons(t_data *data)
  * initializes all in data to NULL so that I can detect whether it has
  * been successfully allocated while freeing
  */
-void ft_init_data(t_data *data)
+void	ft_init_data(t_data *data)
 {
 	data->image_map_floor = NULL;
 	data->image_map_player = NULL;
@@ -64,12 +68,31 @@ void ft_init_data(t_data *data)
 	data->string_f_color = NULL;
 	data->image_minimap = NULL;
 	data->image_to_window = NULL;
-	data->texture_heigth = 32;
-	data->texture_width = 32;
-	data->arr_heigth = 16;
-	data->arr_width = 16;
+	data->texture_heigth = 64;
+	data->texture_width = 64;
 	data->initial_orientation = 'X';
 	ft_init_buttons(data);
 	data->time_d_compound = 0;
 	data->frame_counter = 0;
+}
+
+/**
+ * Checks whether a parsed line from the .cub file is a map line
+ */
+bool ft_is_map(char *s)
+{
+	int i;
+	int flag;
+
+	i = 0;
+	flag = 0;
+	while (s[i])
+	{
+		if (s[i] != ' ' && s[i] != '1' && s[i] != '0' && s[i] != 'N' && s[i] != 'S' && s[i] != 'E' && s[i] != 'W')
+			flag++;
+		i++;
+	}
+	if (flag > 0)
+		return (true);
+	return (false);
 }

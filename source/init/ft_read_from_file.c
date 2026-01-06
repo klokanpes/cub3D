@@ -12,10 +12,10 @@
 
 #include "../includes/cub3d.h"
 
-static void ft_add_to_map_2(t_data *data, char *new_row, int *valid_rows)
+static void	ft_add_to_map_2(t_data *data, char *new_row, int *valid_rows)
 {
-	int i;
-	char **temp;
+	int		i;
+	char	**temp;
 
 	i = 0;
 	temp = (char **)malloc(sizeof(char *) * (*valid_rows + 2));
@@ -36,9 +36,15 @@ static void ft_add_to_map_2(t_data *data, char *new_row, int *valid_rows)
 	(*valid_rows)++;
 }
 
-void ft_add_to_map(t_data *data, char *new_row)
+/**
+ * This funcrion is called when a map row is encountered, it allocates space 
+ * for one new row in the map array and adds it there
+ * 
+ * basically it dynamically grows the map arr, making sure to always null terminate it. 
+ */
+void	ft_add_to_map(t_data *data, char *new_row)
 {
-	static int valid_rows = 0;
+	static int	valid_rows = 0;
 
 	if (valid_rows == 0)
 	{
@@ -56,21 +62,34 @@ void ft_add_to_map(t_data *data, char *new_row)
 		ft_add_to_map_2(data, new_row, &valid_rows);
 }
 
-static void ft_read_from_file_3(int fd, t_data *data, char *temp)
+/**
+ * Remembers states about the map parsing being started and finished.
+ * If it was finished but there is another map line, it exits
+ * the program with an error.
+ */
+static void	ft_read_from_file_3(int fd, t_data *data, char *temp)
 {
 	if (temp[0] == '\0')
 	{
+		if (data->map_ended == 0 && data->map_started == 1)
+			data->map_ended = 1;
+		else if (data->map_ended == 1 && ft_is_map(temp))
+			ft_map_space_error_exit(fd, data, temp);
 		free(temp);
 		ft_read_from_file(fd, data);
 	}
 	else
 	{
+		if (data->map_ended == 1)
+			ft_map_space_error_exit(fd, data, temp);
 		ft_add_to_map(data, temp);
+		if (data->map_started == 0)
+			data->map_started = 1;
 		ft_read_from_file(fd, data);
 	}
 }
 
-static void ft_read_from_file_2(int fd, t_data *data, char *temp)
+static void	ft_read_from_file_2(int fd, t_data *data, char *temp)
 {
 	if (temp[0] == 'E' && temp[1] == 'A')
 	{
@@ -100,15 +119,17 @@ static void ft_read_from_file_2(int fd, t_data *data, char *temp)
  * Reads from the file from argv[1] and stores all results in data.
  * Reads the data recursively, each new call parses a new line from
  * the file via gnl, works with it, and recurses. On EOF it returns.
+ * 
+ * Also, removes the trailing new lines
  */
-void ft_read_from_file(int fd, t_data *data)
+void	ft_read_from_file(int fd, t_data *data)
 {
 	char *temp;
 	char *temp_temp;
 
 	temp = get_next_line(fd);
 	if (!temp)
-		return;
+		return ;
 	if (ft_strchr(temp, '\n'))
 	{
 		temp_temp = ft_strtrim(temp, "\n");

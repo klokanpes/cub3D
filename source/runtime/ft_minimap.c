@@ -12,6 +12,9 @@
 
 #include "../../includes/cub3d.h"
 
+/**
+ * Returns the bigger of two ints
+ */
 static int	ft_max(int a, int b)
 {
 	if (a > b)
@@ -20,6 +23,9 @@ static int	ft_max(int a, int b)
 		return (b);
 }
 
+/**
+ * Returns the smaller of two ints
+ */
 static int	ft_min(int a, int b)
 {
 	if (a < b)
@@ -28,12 +34,21 @@ static int	ft_min(int a, int b)
 		return (b);
 }
 
+/**
+ * This function computes the intersection of the minimap image with the
+ * position of the player with regards to the minimap size. It basically
+ * makes sure that first -> the minimap follows the player (300px around)
+ * the player get drawn every frame and second-> it does not draw out of
+ * bounds pixels.
+ * 
+ * There are some magical numbers
+ */
 static void	ft_compute_minimap_intersection(t_minimap *map, t_data *data)
 {
-	map->want_x0 = map->p_pos.x - 150;
-	map->want_y0 = map->p_pos.y - 150;
-	map->want_h = 300;
-	map->want_w = 300;
+	map->want_x0 = map->p_pos.x - MINI_WIDTH / 2;
+	map->want_y0 = map->p_pos.y - MINI_HEIGTH / 2;
+	map->want_h = MINI_HEIGTH;
+	map->want_w = MINI_WIDTH;
 	map->want_x1 = map->want_x0 + map->want_w;
 	map->want_y1 = map->want_y0 + map->want_h;
 	map->src_x0 = 0;
@@ -50,6 +65,17 @@ static void	ft_compute_minimap_intersection(t_minimap *map, t_data *data)
 	map->dst_copy_y0 = map->dst_y0 + (map->copy_src_y0 - map->want_y0);
 }
 
+/**
+ * Initial data gathering
+ * 
+ * gets the player position transformed into minimap units (32x32 px), 
+ * gets the addresses of the src (complete minimap), and dst(image_to_win)
+ * computes the bypes_pp (always the same in mlx images)
+ * dy is an itterator here(like int i), dst_x0 and dst_y0 are somewhat
+ * like constants -> they position the minimap into the final viewport
+ * position. Looks good at these coordinates. It is basically the beginning
+ * coordinates of the minimap.
+ */
 static void	ft_get_minimap_base_data(t_minimap *map, t_data *data)
 {
 	map->p_pos = ft_get_minimap_player_pos(data);
@@ -66,9 +92,7 @@ static void	ft_get_minimap_base_data(t_minimap *map, t_data *data)
 }
 
 /**
- * @todo ADD MORE COMMENTS
- * 
- * gets data about the minimap image and the image_to_window, 
+ * gets data about the minimap image and the image_to_window,
  * precomputes the colision - i.e. if I want to see 300x300px
  * minimap, how does that compare to the minimap size and the
  * position of the player -> I do not want to see anything
@@ -76,6 +100,21 @@ static void	ft_get_minimap_base_data(t_minimap *map, t_data *data)
  * pretty...)
  * Then prefills the minimap with black, and then copies only the
  * appropriate part of the minimap onto the viewport in image_to_window.
+ * 
+ * lastly, it puts the player on the minimap via a red circle and a
+ * black line indicating the current vector
+ * 
+ * It does that by getting the initial minimap data (like the current
+ * player position etc, then pre fills the minimap part of the image
+ * buffer by black pixels, so that nothing else is shown, then it
+ * computes the intersections -> to know which data to take from the
+ * minimap img not to be out of bounds) and lastly it copies only the
+ * valid lines via ft_memcpy.
+ * 
+ * Funnily enough, it all works even without this, as the out of bounds
+ * reads do not cause a segfault here (even garbage values can be
+ * interpreted as integers and put to the screen) but it looks like
+ * a strange noise -> not pretty to look at.
  */
 void	ft_put_minimap_to_image(t_data *data)
 {

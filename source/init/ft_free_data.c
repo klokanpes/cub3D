@@ -13,14 +13,39 @@
 #include "../includes/cub3d.h"
 
 /**
+ * Reads via gnl until EOF is reached while freeing all the rest...
+ * This is in order to get rid of the static buffer in gnl, else leaks
+ */
+void ft_free_get_next(int fd)
+{
+	char *temp;
+
+	temp = get_next_line(fd);
+	while (temp)
+	{
+		free(temp);
+		temp = get_next_line(fd);
+	}
+}
+
+void ft_map_space_error_exit(int fd, t_data *data, char *temp)
+{
+	free(temp);
+	close (fd);
+	ft_free_get_next(fd);
+	ft_free_data(data);
+	exit (err_print("Map: space between map lines", EXIT_FAILURE));
+}
+
+/**
  * Frees the char ** array of the loaded map
  */
-static void ft_free_map(char **map)
+static void	ft_free_map(char **map)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while(map[i])
+	while (map[i])
 	{
 		free(map[i]);
 		i++;
@@ -32,7 +57,7 @@ static void ft_free_map(char **map)
 /**
  * Freeing helper
  */
-static void ft_free_data_2(t_data *data)
+static void	ft_free_data_2(t_data *data)
 {
 	if (data->image_no)
 		mlx_destroy_image(data->mlx, data->image_no);
@@ -49,9 +74,10 @@ static void ft_free_data_2(t_data *data)
 }
 
 /**
- * Frees everything if it exists
+ * Frees everything on exist
+ * used in error paths as well as normal exit paths
  */
-void ft_free_data(t_data *data)
+void	ft_free_data(t_data *data)
 {
 	if (data->path_ea)
 		free(data->path_ea);

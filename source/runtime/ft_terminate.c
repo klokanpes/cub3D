@@ -15,7 +15,7 @@
 /**
  * Used for MLX errors, prints error, frees data, exits(1)
  */
-int ft_err_terminate(t_data *data, char *err_msg)
+int	ft_err_terminate(t_data *data, char *err_msg)
 {
 	ft_free_data(data);
 	mlx_destroy_window(data->mlx, data->window);
@@ -29,7 +29,7 @@ int ft_err_terminate(t_data *data, char *err_msg)
 /**
  * Used en ESC press, terminates MLX, frees data, exits
  */
-int ft_terminate(t_data *data)
+int	ft_terminate(t_data *data)
 {
 	ft_free_data(data);
 	mlx_destroy_window(data->mlx, data->window);

@@ -14,8 +14,10 @@
 
 /**
  * Keyhook function to log key presses
+ * 
+ * When I key is pressed, the state is saved
  */
-int ft_key_press(int keysym, t_data *data)
+int	ft_key_press(int keysym, t_data *data)
 {
 	if (keysym == XK_Escape)
 		ft_terminate(data);
@@ -38,8 +40,10 @@ int ft_key_press(int keysym, t_data *data)
 
 /**
  * Keyhook function to log key releases
+ * 
+ * When a key is released, the state is reset
  */
-int ft_key_release(int keysym, t_data *data)
+int	ft_key_release(int keysym, t_data *data)
 {
 	if (keysym == XK_w)
 		data->buttons.w = false;

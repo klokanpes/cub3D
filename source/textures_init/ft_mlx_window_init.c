@@ -15,7 +15,7 @@
 /**
  * MLX initializer, initializes mlx, and a window.
  */
-int ft_mlx_window_innit(t_data *data)
+int	ft_mlx_window_innit(t_data *data)
 {
 	data->mlx = mlx_init();
 	if (!data->mlx)

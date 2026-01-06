@@ -13,14 +13,14 @@
 #include "../includes/cub3d.h"
 
 /**
- * Tries to open every texture to check paths. If not successful, it frees data 
+ * Tries to open every texture to check paths. If not successful, it frees data
  * and exits as non-existent textures would create a segfault while trying
  * to load images
  */
-static void ft_check_textures(t_data *data)
+static void	ft_check_textures(t_data *data)
 {
-	int fd;
-	int flag;
+	int	fd;
+	int	flag;
 
 	flag = 0;
 	fd = open(data->path_no, O_RDONLY);
@@ -31,11 +31,11 @@ static void ft_check_textures(t_data *data)
 	if (fd < 0)
 		flag++;
 	close(fd);
-	fd = open (data->path_ea, O_RDONLY);
+	fd = open(data->path_ea, O_RDONLY);
 	if (fd < 0)
 		flag++;
 	close(fd);
-	fd = open (data->path_we, O_RDONLY);
+	fd = open(data->path_we, O_RDONLY);
 	if (fd < 0)
 		flag++;
 	close(fd);
@@ -46,9 +46,9 @@ static void ft_check_textures(t_data *data)
 	}
 }
 
-static int ft_clean_up_input_2(t_data *data)
+static int	ft_clean_up_input_2(t_data *data)
 {
-	char *temp;
+	char	*temp;
 
 	temp = ft_strtrim(data->string_c_color, "C ");
 	if (!temp)
@@ -67,9 +67,9 @@ static int ft_clean_up_input_2(t_data *data)
 /**
  * Trims all input values so that no markers are left in them
  */
-static int ft_clean_up_input(t_data *data)
+static int	ft_clean_up_input(t_data *data)
 {
-	char *temp;
+	char	*temp;
 
 	temp = ft_strtrim(data->path_no, "NO ");
 	if (!temp)
@@ -96,10 +96,10 @@ static int ft_clean_up_input(t_data *data)
 
 /**
  * Continue with initialization of values in data.
- * Specifically cleans up input from markers, sets time, 
+ * Specifically cleans up input from markers, sets time,
  * and sets initial angle based on initial position in map.
  */
-static int ft_init_2(t_data *data)
+static int	ft_init_2(t_data *data)
 {
 	if (ft_clean_up_input(data))
 	{

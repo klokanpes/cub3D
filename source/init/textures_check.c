@@ -37,6 +37,8 @@ static bool	ft_check_file_type(char *path)
  */
 bool	ft_textures_check(t_data *data)
 {
+	if (!data->path_no || !data->path_so || !data->path_ea || !data->path_we)
+		return (false);
 	if (!ft_check_file_type(data->path_no) || !ft_check_file_type(data->path_so)
 		|| !ft_check_file_type(data->path_ea)
 		|| !ft_check_file_type(data->path_we))

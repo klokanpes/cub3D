@@ -60,11 +60,11 @@ static bool	ft_check_neighbours(int i, int j, t_data *data)
 
 /**
  * Checks whether the map is fully enclosed with '1's...
- * 
+ *
  * Enforces that no '0' can be on the edge of the map and then
  * calls ft_check_neighbours.
  */
-static bool	ft_border_check(char **map, int width, int heigth, t_data *data)
+bool	ft_border_check(char **map, int width, int heigth, t_data *data)
 {
 	int	i;
 	int	j;

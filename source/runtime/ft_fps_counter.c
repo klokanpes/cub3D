@@ -13,9 +13,20 @@
 #include "../../includes/cub3d.h"
 
 /**
- * Compute FPS from stored values every FRAME_COUNTER frames
- * and put it to window. There is no ghosting because I clear
- * the window on every frame
+ * Counts the FPS of the game and puts it on the window.
+ * 
+ * The counter runs every 30 frames as to be more conservative
+ * to memory and not impact the frame rate by sys calls while 
+ * rendering.
+ * 
+ * It counts frames and increments the time delta between them.
+ * Every thirty frames it computes a new value, turns it into a
+ * string and saves it.
+ * 
+ * On every frame it takes the saved value and pushes it to
+ * the window. Since the window is cleared on every frame, there
+ * is no ghosting.
+ * 
  */
 void	ft_put_fps_on_screen(t_data *data, t_cub_data *c_data)
 {
@@ -27,7 +38,8 @@ void	ft_put_fps_on_screen(t_data *data, t_cub_data *c_data)
 	{
 		if (data->time_d_compound > 0)
 		{
-			data->fps = (int)(1000.0 / (data->time_d_compound / data->frame_counter));
+			data->fps = (int)(1000.0 / (data->time_d_compound
+						/ data->frame_counter));
 			data->time_d_compound = 0;
 			data->frame_counter = 0;
 			if (data->fps_string)
@@ -42,6 +54,6 @@ void	ft_put_fps_on_screen(t_data *data, t_cub_data *c_data)
 		}
 	}
 	if (data->fps_string)
-		mlx_string_put(data->mlx, data->window, WIDTH - 100, HEIGTH - (HEIGTH - 50),
-			0xFFFFFFFF, data->fps_string);
+		mlx_string_put(data->mlx, data->window, WIDTH - 100, HEIGTH - (HEIGTH
+				- 50), 0xFFFFFFFF, data->fps_string);
 }
