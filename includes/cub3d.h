@@ -42,7 +42,8 @@
 # define MINI_WIDTH 300
 # define MINI_HEIGTH 300
 
-# define MINIMAP_FLOOR "assets/map_floor.xpm"
+// # define MINIMAP_FLOOR "assets/map_floor.xpm"
+# define MINIMAP_FLOOR "assets/pink_stone.xpm"
 # define MINIMAP_WALL "assets/map_wall.xpm"
 # define MINIMAP_ARROW "assets/arrow.xpm"
 
@@ -245,6 +246,26 @@ typedef struct s_raycast
 	uint32_t			color;
 }						t_raycast;
 
+typedef struct s_make_minimap
+{
+	int					i;
+	int					bytes_pp;
+	t_img_data			src;
+	t_img_data			dst;
+	char				*src_row;
+	char				*dst_row;
+}						t_make_minimap;
+
+typedef struct s_pixel_put
+{
+	int					dx;
+	int					dy;
+	int					i;
+	int					step;
+	float				step_x;
+	float				step_y;
+}						t_pixel_put;
+
 // init_source folder
 
 void					ft_read_from_file(int fd, t_data *data);
@@ -268,6 +289,7 @@ void					ft_free_get_next(int fd);
 void					ft_map_space_error_exit(int fd, t_data *data,
 							char *temp);
 bool					ft_is_map(char *s);
+void					ft_set_init_plane(t_data *data);
 
 // textures_init folder
 

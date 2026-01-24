@@ -32,15 +32,15 @@ static void	ft_set_probes(t_pos_check *pos, t_pos *new_pos)
 /**
  * This function checks the wanted new player position agains
  *  the map. If there were to be a colision with the wall, the player
- * cant move there, so that has to be checked. Both axis are tried 
+ * cant move there, so that has to be checked. Both axis are tried
  * independently which results in a sliding motion along walls without
  * any physics logic.
- * The player is also being treated as a circle, a radius is being added 
+ * The player is also being treated as a circle, a radius is being added
  * to the player so that it is not possible to clip through corners etc.
- * 
+ *
  * Also, the probe is being checked in two places around the player to
  * prevent being stuck in corners.
- * 
+ *
  * The radius also prevents the player to go really close to a wall which
  * is visually not really pretty
  */
@@ -58,7 +58,7 @@ static void	ft_check_new_positions(t_pos *new_pos, t_data *data,
 	if (pos.delta_y != 0.0)
 	{
 		if (data->map[(int)pos.probe_y][(int)(data->player_pos_x
-				+ pos.radius)] == '0'
+			+ pos.radius)] == '0'
 			&& data->map[(int)pos.probe_y][(int)(data->player_pos_x
 				- pos.radius)] == '0')
 			c_data->new_pos.pos_y = new_pos->pos_y;
@@ -100,7 +100,7 @@ static void	ft_set_intent(t_data *data, t_cub_data *c_data, t_up_pos *pos)
 	}
 }
 
-void ft_normalize_unit_len(t_up_pos *pos)
+void	ft_normalize_unit_len(t_up_pos *pos)
 {
 	pos->intent.pos_x *= 1.0 / pos->unit_len;
 	pos->intent.pos_y *= 1.0 / pos->unit_len;
@@ -108,27 +108,27 @@ void ft_normalize_unit_len(t_up_pos *pos)
 
 /**
  * Computes the movement of the player via WSAD keys and computes
- * the new position the player would go to. Then it tries to apply it, 
+ * the new position the player would go to. Then it tries to apply it,
  * if the player were to hit a wall (go into it), nothing happens.
- * 
- * First, it copies the original position (so that no data is lost), 
+ *
+ * First, it copies the original position (so that no data is lost),
  * then it checks whether and of the WSAD keys are pressed. If not,
  * nothing to be done here (return).
- * 
+ *
  * Then it initializes the intended positions to 0, checks whether
  * shift is pressed, which changes the step(speed) -> calculated
  * via time_delta and movement speed constants.
- * 
+ *
  * Then it sets the intended movement position(combinig all
  * pressed buttons together (opposing buttons approximately cancel
  * each other out)).
  * Then, if no intent was found, return (nothing to do, they canceled
- * each other out -> probably wont happen perfectly since they are 
+ * each other out -> probably wont happen perfectly since they are
  * float values and they will not be equal to 0 but one can dream).
- * 
+ *
  * Then unit len is computed and normalized in case it was a big number.
  * Unit len is basically a triangle where I want to end up.
- * 
+ *
  * Then the new position(wanted) is updated and checked for correctness.
  */
 bool	ft_update_position(t_data *data, t_cub_data *c_data)

@@ -12,11 +12,27 @@
 
 #include "../includes/cub3d.h"
 
+static void	ft_print_err(char *str)
+{
+	int	i;
+	int	res;
+
+	i = 0;
+	while (str[i])
+	{
+		res = write(STDERR_FILENO, &str[i], 1);
+		i++;
+	}
+	(void)res;
+}
+
 /**
  * Prints "Error", then error msg, returns exit code
  */
 int	err_print(char *msg, int exit_code)
 {
-	printf("Error\n%s\n", msg);
+	ft_print_err("Error\n");
+	ft_print_err(msg);
+	ft_print_err("\n");
 	return (exit_code);
 }

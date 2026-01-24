@@ -13,6 +13,20 @@
 #include "../includes/cub3d.h"
 
 /**
+ * Sets plane based on the player vector. It is a perpendicular
+ * vector to the players direction and it enables the raycaster
+ * to cast a ray for each screen pixel column. It controls the Field Of View.
+ */
+void	ft_set_init_plane(t_data *data)
+{
+	double	plane_len;
+
+	plane_len = tan(FOV / 2);
+	data->plane.dx = -data->dir.dy * plane_len;
+	data->plane.dy = data->dir.dx * plane_len;
+}
+
+/**
  * Checks arg len (argv[1]) and checks whether it has the correct ending
  */
 bool	arg_check(char *arg)
@@ -79,16 +93,17 @@ void	ft_init_data(t_data *data)
 /**
  * Checks whether a parsed line from the .cub file is a map line
  */
-bool ft_is_map(char *s)
+bool	ft_is_map(char *s)
 {
-	int i;
-	int flag;
+	int	i;
+	int	flag;
 
 	i = 0;
 	flag = 0;
 	while (s[i])
 	{
-		if (s[i] != ' ' && s[i] != '1' && s[i] != '0' && s[i] != 'N' && s[i] != 'S' && s[i] != 'E' && s[i] != 'W')
+		if (s[i] != ' ' && s[i] != '1' && s[i] != '0' && s[i] != 'N'
+			&& s[i] != 'S' && s[i] != 'E' && s[i] != 'W')
 			flag++;
 		i++;
 	}

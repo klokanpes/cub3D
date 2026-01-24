@@ -30,7 +30,7 @@ double	ft_get_delta_dist(double ray_dir)
  * byte offset since the beginning of the address via x, y, the length of
  * the line (of pixels including padding) and bits per pixel
  * then it just gets the correct address including the offset, byte_offset
- * is divided by 4 because bits_pp is 32 in mlx. 
+ * is divided by 4 because bits_pp is 32 in mlx.
  * Then it just returns the dereferenced value from there, which is the color
  * of the particular pixel at these coordinates
  */
@@ -58,7 +58,7 @@ uint32_t	ft_get_pixel_color(t_img_data *img, int x, int y, t_data *data)
  */
 void	ft_raycast_initial_data(t_data *data, t_raycast *r_data)
 {
-	r_data->x_offset = WIDTH / 2 - 1280 / 2;
+	r_data->x_offset = WIDTH / 2 - VIEWPORT_WIDTH / 2;
 	r_data->y_offset = 50;
 	r_data->idata.addr = mlx_get_data_addr(data->image_to_window,
 			&r_data->idata.bits_per_pixel, &r_data->idata.line_length,

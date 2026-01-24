@@ -40,7 +40,8 @@ static void	ft_add_to_map_2(t_data *data, char *new_row, int *valid_rows)
  * This funcrion is called when a map row is encountered, it allocates space 
  * for one new row in the map array and adds it there
  * 
- * basically it dynamically grows the map arr, making sure to always null terminate it. 
+ * basically it dynamically grows the map arr, making sure to always
+ * null terminate it. 
  */
 void	ft_add_to_map(t_data *data, char *new_row)
 {
@@ -124,8 +125,8 @@ static void	ft_read_from_file_2(int fd, t_data *data, char *temp)
  */
 void	ft_read_from_file(int fd, t_data *data)
 {
-	char *temp;
-	char *temp_temp;
+	char	*temp;
+	char	*temp_temp;
 
 	temp = get_next_line(fd);
 	if (!temp)

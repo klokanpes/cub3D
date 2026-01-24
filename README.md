@@ -3,8 +3,5 @@
 
 ![screenshot of runtime](https://github.com/klokanpes/cub3D/blob/main/cub3d_img.jpg?raw=true)
 
-# CAUTION
-- not yet fully in compliance with the norm
-
 
 

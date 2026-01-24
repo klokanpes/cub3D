@@ -1,10 +1,10 @@
 NO assets/normal_stone.xpm
 SO assets/slime_stone.xpm
-WE assets/wood_planks.xpm
 EA assets/blue_blocks.xpm
 
 F 200,100,0
 C 225,30,0
+WE assets/wood_planks.xpm
 
  1111
 10001

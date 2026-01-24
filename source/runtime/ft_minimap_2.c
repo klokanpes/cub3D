@@ -28,8 +28,8 @@ t_player_mini_pos	ft_get_minimap_player_pos(t_data *data)
 
 /**
  * draws a circle on the minimap where the player position is.
- * 
- * basically itterates over a square (double loop), and for pixels 
+ *
+ * basically itterates over a square (double loop), and for pixels
  * that would fit the definition of a circle it puts a red pixel.
  */
 static void	ft_draw_circle_on_minimap(t_player_mini_pos pos,
@@ -56,6 +56,7 @@ static void	ft_draw_circle_on_minimap(t_player_mini_pos pos,
 		y++;
 	}
 }
+
 /**
  * Draws a circle at the player position (center of minimap),
  * then draws a black line of 10 px in the direction of the current
@@ -79,7 +80,7 @@ void	ft_put_player_on_minimap(int dst_y0, t_data *data,
 	a.y0 = tip.y;
 	a.x1 = pos.x;
 	a.y1 = pos.y;
-	ft_draw_lines(&a, &to_win_data, 0xFF000000);
+	ft_draw_lines(&a, &to_win_data, 0xFFFFFF00);
 }
 
 /**
@@ -88,8 +89,8 @@ void	ft_put_player_on_minimap(int dst_y0, t_data *data,
  */
 void	ft_prefill_minimap(t_minimap *map)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
 	while (i < 300)

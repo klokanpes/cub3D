@@ -15,7 +15,7 @@
 /**
  * Main collision algorithm, checks for colisions on all intersections
  * of the map with the current ray
- * 
+ *
  * DDM loop (digital differential analysis)
  * Jumps accross map squares in either x or y directions while checking
  * whether the ray has hit a wall. If so, the whole algorithm moves forward
@@ -59,12 +59,12 @@ static void	ft_raycast_colision_vals_2(t_data *data, t_raycast *r_data)
 
 /**
  * This calculates specific variables to correctly draw the pixel column.
- * 
+ *
  * Firstly the perp_wall_dist is the distance of the player(camera) from
  * the wall. line_height enables perspective (how far I am vs how big the
  * wall drawn should be, from that we calculate where the wall drawing should
  * start and end -> everything else will be floor and ceiling).
- * 
+ *
  * Wall_x is where on the wall has the ray colided transformed to the walls
  * dimensions (texture dimensions.) via tex_x. This is important to know where
  * to take pixel data from.
@@ -116,8 +116,8 @@ void	ft_raycast_set_current_texture(t_raycast *r_data)
 }
 
 /**
- * Draws the column of pixels in a loop. If we are above the draw_start, 
- * all pixels are ceiling color. If bellow, they are all floor color. 
+ * Draws the column of pixels in a loop. If we are above the draw_start,
+ * all pixels are ceiling color. If bellow, they are all floor color.
  * Else, we get the correct pixel color value from the ft_get_pixel_color
  * and place it in the column.
  */

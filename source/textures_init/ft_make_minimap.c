@@ -14,41 +14,37 @@
 
 /**
  * Coopies the specific texture row by row into the whole minimap image.
- * 
+ *
  * gets addresses of src and dst (src is always the single texture), dst
- * is always the complete minimap img. 
- * 
+ * is always the complete minimap img.
+ *
  * Since all is done via mlx, bits per pixel are the same for both here.
  * then it copies 32 rows(texture heigth) from src, to dst address
- * 
+ *
  * src address is i times line_len + beginning of src address
- * 
- * the dst address is the beginning address + (y + i) times line_len + 
+ *
+ * the dst address is the beginning address + (y + i) times line_len +
  * x * bytes_pp (4). That accounts for the coordinates where I want to copy.
- * 
+ *
  * Then it uses ft_memcpy to copy the data.
  */
 static void	ft_copy_texture(t_t_copy *c, t_data *data, void *texture)
 {
-	int			i;
-	int			bytes_pp;
-	t_img_data	src;
-	t_img_data	dst;
-	char		*src_row;
-	char		*dst_row;
+	t_make_minimap	m;
 
-	src.addr = mlx_get_data_addr(texture, &src.bits_per_pixel, &src.line_length,
-			&src.endian);
-	dst.addr = mlx_get_data_addr(data->image_minimap, &dst.bits_per_pixel,
-			&dst.line_length, &dst.endian);
-	bytes_pp = src.bits_per_pixel / 8;
-	i = 0;
-	while (i < data->mini_texture_heigth)
+	m.src.addr = mlx_get_data_addr(texture, &m.src.bits_per_pixel,
+			&m.src.line_length, &m.src.endian);
+	m.dst.addr = mlx_get_data_addr(data->image_minimap, &m.dst.bits_per_pixel,
+			&m.dst.line_length, &m.dst.endian);
+	m.bytes_pp = m.src.bits_per_pixel / 8;
+	m.i = 0;
+	while (m.i < data->mini_texture_heigth)
 	{
-		src_row = src.addr + i * src.line_length;
-		dst_row = dst.addr + (c->y + i) * dst.line_length + c->x * bytes_pp;
-		ft_memcpy(dst_row, src_row, data->mini_texture_heigth * bytes_pp);
-		i++;
+		m.src_row = m.src.addr + m.i * m.src.line_length;
+		m.dst_row = m.dst.addr + (c->y + m.i) * m.dst.line_length + c->x
+			* m.bytes_pp;
+		ft_memcpy(m.dst_row, m.src_row, data->mini_texture_heigth * m.bytes_pp);
+		m.i++;
 	}
 }
 
@@ -58,7 +54,7 @@ static void	ft_copy_texture(t_t_copy *c, t_data *data, void *texture)
  *
  * initializes a new image that is((map_width * texture_width) * (map_heigth *
  * texture_heigth)) big.
- * 
+ *
  * Then proceeds to loop through the map(char **), checking for
  * values, and either copying the floor or wall textures at the correct
  * coordinates.

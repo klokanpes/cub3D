@@ -119,20 +119,6 @@ bool	ft_set_colors(t_data *data)
 }
 
 /**
- * Sets plane based on the player vector. It is a perpendicular
- * vector to the players direction and it enables the raycaster
- * to cast a ray for each screen pixel column. It controls the Field Of View.
- */
-void	ft_set_init_plane(t_data *data)
-{
-	double	plane_len;
-
-	plane_len = tan(FOV / 2);
-	data->plane.dx = -data->dir.dy * plane_len;
-	data->plane.dy = data->dir.dx * plane_len;
-}
-
-/**
  * Sets initial player vector based on input.
  */
 bool	ft_set_initial_position(t_data *data)

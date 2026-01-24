@@ -87,7 +87,7 @@ static void	ft_get_minimap_base_data(t_minimap *map, t_data *data)
 			&map->minimap_data.endian);
 	map->bytes_pp = map->minimap_data.bits_per_pixel / 8;
 	map->dy = 0;
-	map->dst_x0 = WIDTH / 2 - 300 / 2;
+	map->dst_x0 = WIDTH / 2 - MINI_WIDTH / 2;
 	map->dst_y0 = 700;
 }
 

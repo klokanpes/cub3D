@@ -21,8 +21,7 @@ int	ft_err_terminate(t_data *data, char *err_msg)
 	mlx_destroy_window(data->mlx, data->window);
 	mlx_destroy_display(data->mlx);
 	free(data->mlx);
-	printf("Error\n%s\n", err_msg);
-	exit(EXIT_FAILURE);
+	exit(err_print(err_msg, EXIT_FAILURE));
 	return (0);
 }
 

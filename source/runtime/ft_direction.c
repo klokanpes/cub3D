@@ -14,8 +14,8 @@
 
 /**
  * returns the new direction vector of the player based on
- * the original direction and delta theta. 
- * 
+ * the original direction and delta theta.
+ *
  * Adapted from: https://lodev.org/cgtutor/raycasting.html
  */
 static t_dir	ft_get_dir(float d_th, t_dir orig_dir)
@@ -56,11 +56,13 @@ static void	ft_set_plane(t_cub_data *c_data)
  * multiplying ROT_SPEED(in radians/second) by time_delta. So that rotation
  * speed is the same no matter the framerate. Basically, how much
  * rotation to apply in each frame.
- * 
+ *
  * Then it applies the rotation by calculating the new forward vector
  * based on the button being pressed. (left arrow gets -delta theta)
- * 
+ *
  * Then it sets the new plane (perpendicular vector) and returns.
+ *
+ * time_d is being kept in ms, but changed to seconds for computations
  */
 bool	ft_update_vector(t_data *data, t_cub_data *c_data)
 {
@@ -73,7 +75,6 @@ bool	ft_update_vector(t_data *data, t_cub_data *c_data)
 	if ((!data->buttons.left && !data->buttons.right) || (data->buttons.left
 			&& data->buttons.right))
 		return (false);
-	// keep it in ms,change to s for computation
 	d_th = ROT_SPEED * (c_data->time_d / 1000.0);
 	if (data->buttons.left)
 		c_data->new_dir = ft_get_dir(d_th * -1.0, c_data->new_dir);

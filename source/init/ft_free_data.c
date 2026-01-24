@@ -16,9 +16,9 @@
  * Reads via gnl until EOF is reached while freeing all the rest...
  * This is in order to get rid of the static buffer in gnl, else leaks
  */
-void ft_free_get_next(int fd)
+void	ft_free_get_next(int fd)
 {
-	char *temp;
+	char	*temp;
 
 	temp = get_next_line(fd);
 	while (temp)
@@ -28,13 +28,13 @@ void ft_free_get_next(int fd)
 	}
 }
 
-void ft_map_space_error_exit(int fd, t_data *data, char *temp)
+void	ft_map_space_error_exit(int fd, t_data *data, char *temp)
 {
 	free(temp);
-	close (fd);
+	close(fd);
 	ft_free_get_next(fd);
 	ft_free_data(data);
-	exit (err_print("Map: space between map lines", EXIT_FAILURE));
+	exit(err_print("Map: space between map lines", EXIT_FAILURE));
 }
 
 /**
