@@ -33,8 +33,8 @@
 # define MOV_SPEED 1
 # define MOV_FAST 2
 # define FOV 1.047
-# define TEXTURE_SIZE 128
-# define MINIMAP_TILE_TEXTURE_SIZE 64
+# define TEXTURE_SIZE 64
+# define MINIMAP_TILE_TEXTURE_SIZE 32
 # define FRAME_COUNTER 30
 # define PLAYER_RADIUS_MINIMAP 7
 # define PLAYER_COLISION_RADIUS 0.2
@@ -43,9 +43,10 @@
 # define MINI_WIDTH 300
 # define MINI_HEIGTH 300
 
-// # define MINIMAP_FLOOR "assets/map_floor.xpm"
-# define MINIMAP_FLOOR "assets/pink_stone.xpm"
-# define MINIMAP_WALL "assets/blue_blocks.xpm"
+# define MINIMAP_FLOOR "assets/map_floor.xpm"
+# define MINIMAP_WALL "assets/map_wall.xpm"
+// # define MINIMAP_FLOOR "assets/pink_stone.xpm"
+// # define MINIMAP_WALL "assets/blue_blocks.xpm"
 # define MINIMAP_ARROW "assets/arrow.xpm"
 
 typedef struct s_coords
