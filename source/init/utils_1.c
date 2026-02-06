@@ -52,8 +52,8 @@ int	ft_init_buttons(t_data *data)
 	data->buttons.right = false;
 	data->buttons.shift = false;
 	data->fps_string = NULL;
-	data->mini_texture_heigth = 32;
-	data->mini_texture_width = 32;
+	data->mini_texture_heigth = MINIMAP_TILE_TEXTURE_SIZE;
+	data->mini_texture_width = MINIMAP_TILE_TEXTURE_SIZE;
 	data->map_started = 0;
 	data->map_ended = 0;
 	return (0);
@@ -82,8 +82,8 @@ void	ft_init_data(t_data *data)
 	data->string_f_color = NULL;
 	data->image_minimap = NULL;
 	data->image_to_window = NULL;
-	data->texture_heigth = 64;
-	data->texture_width = 64;
+	data->texture_heigth = TEXTURE_SIZE;
+	data->texture_width = TEXTURE_SIZE;
 	data->initial_orientation = 'X';
 	ft_init_buttons(data);
 	data->time_d_compound = 0;
