@@ -17,7 +17,8 @@ SRC_INIT		:=	$(INIT)/err.c							\
 					$(INIT)/ft_init.c						\
 					$(INIT)/ft_init_2.c						\
 					$(INIT)/textures_check.c				\
-					$(INIT)/map_check.c
+					$(INIT)/map_check.c						\
+					$(INIT)/ft_read_from_file_2.c
 
 SRC_TEXTURES	:=	$(TEXTURES_INIT)/ft_load_images.c		\
 					$(TEXTURES_INIT)/ft_make_minimap.c		\

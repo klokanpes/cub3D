@@ -31,8 +31,8 @@ void	ft_free_get_next(int fd)
 void	ft_map_space_error_exit(int fd, t_data *data, char *temp)
 {
 	free(temp);
-	close(fd);
 	ft_free_get_next(fd);
+	close(fd);
 	ft_free_data(data);
 	exit(err_print("Map: space between map lines", EXIT_FAILURE));
 }

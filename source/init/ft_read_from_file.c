@@ -12,55 +12,14 @@
 
 #include "../includes/cub3d.h"
 
-static void	ft_add_to_map_2(t_data *data, char *new_row, int *valid_rows)
+static void	ft_read_from_file_4(int fd, t_data *data, char *temp)
 {
-	int		i;
-	char	**temp;
-
-	i = 0;
-	temp = (char **)malloc(sizeof(char *) * (*valid_rows + 2));
-	if (!temp)
-	{
-		ft_free_data(data);
-		exit(err_print("Map reading error(malloc)", EXIT_FAILURE));
-	}
-	while (data->map[i])
-	{
-		temp[i] = data->map[i];
-		i++;
-	}
-	temp[i] = new_row;
-	temp[i + 1] = NULL;
-	free(data->map);
-	data->map = temp;
-	(*valid_rows)++;
-}
-
-/**
- * This funcrion is called when a map row is encountered, it allocates space 
- * for one new row in the map array and adds it there
- * 
- * basically it dynamically grows the map arr, making sure to always
- * null terminate it. 
- */
-void	ft_add_to_map(t_data *data, char *new_row)
-{
-	static int	valid_rows = 0;
-
-	if (valid_rows == 0)
-	{
-		data->map = (char **)malloc(sizeof(char *) * 2);
-		if (!data->map)
-		{
-			ft_free_data(data);
-			exit(err_print("Map reading error(malloc)", EXIT_FAILURE));
-		}
-		data->map[0] = new_row;
-		data->map[1] = NULL;
-		valid_rows++;
-	}
-	else
-		ft_add_to_map_2(data, new_row, &valid_rows);
+	if (data->map_ended == 1)
+		ft_map_space_error_exit(fd, data, temp);
+	ft_add_to_map(data, temp);
+	if (data->map_started == 0)
+		data->map_started = 1;
+	ft_read_from_file(fd, data);
 }
 
 /**
@@ -79,37 +38,45 @@ static void	ft_read_from_file_3(int fd, t_data *data, char *temp)
 		free(temp);
 		ft_read_from_file(fd, data);
 	}
-	else
+	else if (temp[0] == 'F')
 	{
-		if (data->map_ended == 1)
-			ft_map_space_error_exit(fd, data, temp);
-		ft_add_to_map(data, temp);
-		if (data->map_started == 0)
-			data->map_started = 1;
+		if (data->string_f_color)
+			ft_free_and_print_error(data, temp, "Double color", fd);
+		data->string_f_color = temp;
 		ft_read_from_file(fd, data);
 	}
+	else if (temp[0] == 'C')
+	{
+		if (data->string_c_color)
+			ft_free_and_print_error(data, temp, "Double color", fd);
+		data->string_c_color = temp;
+		ft_read_from_file(fd, data);
+	}
+	else
+		ft_read_from_file_4(fd, data, temp);
 }
 
 static void	ft_read_from_file_2(int fd, t_data *data, char *temp)
 {
 	if (temp[0] == 'E' && temp[1] == 'A')
 	{
+		if (data->path_ea)
+			ft_free_and_print_error(data, temp, "Double texture", fd);
 		data->path_ea = temp;
+		ft_read_from_file(fd, data);
+	}
+	else if (temp[0] == 'S' && temp[1] == 'O')
+	{
+		if (data->path_so)
+			ft_free_and_print_error(data, temp, "Double texture", fd);
+		data->path_so = temp;
 		ft_read_from_file(fd, data);
 	}
 	else if (temp[0] == 'W' && temp[1] == 'E')
 	{
+		if (data->path_we)
+			ft_free_and_print_error(data, temp, "Double texture", fd);
 		data->path_we = temp;
-		ft_read_from_file(fd, data);
-	}
-	else if (temp[0] == 'F')
-	{
-		data->string_f_color = temp;
-		ft_read_from_file(fd, data);
-	}
-	else if (temp[0] == 'C')
-	{
-		data->string_c_color = temp;
 		ft_read_from_file(fd, data);
 	}
 	else
@@ -120,7 +87,7 @@ static void	ft_read_from_file_2(int fd, t_data *data, char *temp)
  * Reads from the file from argv[1] and stores all results in data.
  * Reads the data recursively, each new call parses a new line from
  * the file via gnl, works with it, and recurses. On EOF it returns.
- * 
+ *
  * Also, removes the trailing new lines
  */
 void	ft_read_from_file(int fd, t_data *data)
@@ -139,12 +106,9 @@ void	ft_read_from_file(int fd, t_data *data)
 	}
 	if (temp[0] == 'N' && temp[1] == 'O')
 	{
+		if (data->path_no)
+			ft_free_and_print_error(data, temp, "Double texture", fd);
 		data->path_no = temp;
-		ft_read_from_file(fd, data);
-	}
-	else if (temp[0] == 'S' && temp[1] == 'O')
-	{
-		data->path_so = temp;
 		ft_read_from_file(fd, data);
 	}
 	else

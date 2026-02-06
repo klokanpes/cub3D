@@ -292,6 +292,8 @@ void					ft_map_space_error_exit(int fd, t_data *data,
 							char *temp);
 bool					ft_is_map(char *s);
 void					ft_set_init_plane(t_data *data);
+void					ft_free_and_print_error(t_data *data, char *temp,
+							char *msg, int fd);
 
 // textures_init folder
 

@@ -144,7 +144,7 @@ int	ft_init(int ac, char **av, t_data *data)
 	if (!ft_textures_check(data))
 	{
 		ft_free_data(data);
-		exit(err_print("Textures error. Usage: texture.xpm", EXIT_FAILURE));
+		exit(err_print("Textures/Color error", EXIT_FAILURE));
 	}
 	return (ft_init_2(data));
 }
